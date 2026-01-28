@@ -11,7 +11,48 @@ model User {
   email     String   @unique
   name      String?
   image     String?
-  githubId  String?
   createdAt DateTime @default(now())
+
+  memberships Membership[]
+}
+
+model Organization {
+  id        String   @id @default(cuid())
+  name      String
+  createdAt DateTime @default(now())
+
+  members Membership[]
+  repositories Repository[] 
+}
+
+model Membership {
+  id             String @id @default(cuid())
+  role           Role
+  userId         String
+  organizationId String
+
+  user         User         @relation(fields: [userId], references: [id])
+  organization Organization @relation(fields: [organizationId], references: [id])
+
+  @@unique([userId, organizationId])
+}
+
+enum Role {
+  OWNER
+  ADMIN
+  MEMBER
+}
+
+
+model Repository {
+  id             String   @id @default(cuid())
+  githubRepoId   Int
+  name           String
+  fullName       String
+  organizationId String
+
+  organization Organization @relation(fields: [organizationId], references: [id])
+
+  @@unique([githubRepoId, organizationId])
 }
 
