@@ -1,11 +1,11 @@
 export const runtime = "nodejs";
 
-import { BetterAuth } from "better-auth";
+import { betterAuth } from "better-auth";
 import { PrismaClient } from "@prisma/client";
 
 const prisma = new PrismaClient();
 
-export const auth = BetterAuth({
+export const auth = betterAuth({
   database: prisma,
   providers: {
     github: {

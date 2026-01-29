@@ -1,7 +1,7 @@
 import { prisma } from "@/lib/prisma";
 
 export default async function RepositoriesPage() {
-  const repos = await prisma.repository.findMany();
+  const repos = await prisma.repository.findMany({});
 
   return (
     <div>

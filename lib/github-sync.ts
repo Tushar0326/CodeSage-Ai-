@@ -1,5 +1,5 @@
 import { getGitHubAppClient } from "./github";
-import { prisma } from "./prisma";
+import { prisma } from "@/lib/prisma";
 
 export async function syncRepositories(orgId: string) {
   const org = await prisma.organization.findUnique({
