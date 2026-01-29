@@ -21,6 +21,11 @@ model Organization {
   name      String
   createdAt DateTime @default(now())
 
+  githubInstallId  Int?
+  polarCustomerId  String?
+  polarSubscriptionId String?
+  plan             Plan     @default(FREE)
+
   members Membership[]
   repositories Repository[] 
 }
@@ -54,5 +59,23 @@ model Repository {
   organization Organization @relation(fields: [organizationId], references: [id])
 
   @@unique([githubRepoId, organizationId])
+  codeReviews CodeReview[] 
 }
 
+model CodeReview {
+  id             String   @id @default(cuid())
+  repositoryId   String
+  pullRequestId  Int
+  summary        String
+  createdAt      DateTime @default(now())
+
+  repository Repository @relation(fields: [repositoryId], references: [id])
+
+  @@unique([repositoryId, pullRequestId])
+}
+
+enum Plan {
+  FREE
+  PRO
+  TEAM
+}

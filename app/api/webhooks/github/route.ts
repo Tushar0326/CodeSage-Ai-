@@ -15,5 +15,12 @@ export async function POST(req: Request) {
     });
   }
 
+  if (payload.action === "opened" && payload.pull_request) {
+    const pr = payload.pull_request;
+
+    // trigger async review later
+    console.log("PR opened:", pr.number);
+  }
+
   return new Response("OK");
 }
