@@ -1,36 +1,252 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# 🚀 CodeSage AI
 
-## Getting Started
+**AI-Powered GitHub Code Review SaaS**
 
-First, run the development server:
+CodeSage AI is a production-grade, multi-tenant SaaS platform that automatically reviews GitHub pull requests using AI. It integrates deeply with GitHub Apps, processes PR diffs asynchronously, and posts intelligent review feedback directly on pull requests — similar to tools like CodeRabbit and Copilot Review.
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+---
+
+## ✨ Features
+
+* 🤖 **AI-Powered Code Review** – Automatically reviews pull requests using LLMs
+* 🐙 **GitHub App Integration** – Secure, organization-level access
+* 🏢 **Multi-Tenant SaaS Architecture** – Organizations, members, and roles
+* 🔁 **Async Background Jobs** – Reliable processing using Inngest
+* 💬 **Automatic PR Comments** – AI feedback posted directly on GitHub PRs
+* 💳 **Billing-Ready Architecture** – Polar-based subscription model
+* ⚡ **Prisma + PostgreSQL (Neon)** – Scalable cloud database
+* ☁️ **Vercel Deployment Ready** – Production-grade setup
+
+---
+
+## 🧠 How It Works
+
+```
+Pull Request Opened
+        ↓
+GitHub Webhook
+        ↓
+Inngest Background Job
+        ↓
+Fetch PR Diff
+        ↓
+AI Analysis (LLM)
+        ↓
+Store Review in DB
+        ↓
+Post Comment on PR
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+---
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## 🧱 Tech Stack
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+### Frontend
 
-## Learn More
+* **Next.js 16 (App Router)**
+* **TypeScript**
+* **Tailwind CSS + shadcn/ui**
 
-To learn more about Next.js, take a look at the following resources:
+### Backend
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+* **Prisma ORM (v7)**
+* **PostgreSQL (Neon)**
+* **Prisma Accelerate**
+* **Inngest (background workflows)**
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+### Integrations
 
-## Deploy on Vercel
+* **GitHub App + Octokit**
+* **AI SDK (OpenAI)**
+* **Polar (Billing & Subscriptions)**
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+### Deployment
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+* **Vercel**
+
+---
+
+## 🏗️ Database Design
+
+### Core Models
+
+* **User**
+* **Organization**
+* **Membership (Role-based access)**
+* **Repository (GitHub repos)**
+* **CodeReview (AI output)**
+
+### Roles
+
+* OWNER
+* ADMIN
+* MEMBER
+
+---
+
+## 🔐 Authentication
+
+Authentication is handled using **BetterAuth** with GitHub OAuth.
+
+* Secure cookie-based sessions
+* Server-side session access
+* App Router compatible
+
+---
+
+## 🐙 GitHub Integration
+
+CodeSage AI uses a **GitHub App** (not OAuth apps) to ensure:
+
+* Organization-level installations
+* Secure repository access
+* Webhook-based automation
+
+### Webhook Events
+
+* `pull_request.opened`
+* `installation.created`
+* `installation_repositories.added`
+
+---
+
+## 🤖 AI Code Review
+
+AI reviews are generated using PR diffs only (not full repositories), ensuring:
+
+* Faster execution
+* Lower token usage
+* Relevant feedback
+
+### Review Focus Areas
+
+* Bugs & logical issues
+* Security vulnerabilities
+* Performance concerns
+* Code quality improvements
+
+AI feedback is posted directly as a comment on the pull request.
+
+---
+
+## 🔁 Background Jobs (Inngest)
+
+All heavy operations run asynchronously:
+
+* PR diff fetching
+* AI inference
+* Database writes
+* GitHub API calls
+
+This ensures:
+
+* Fast webhook responses
+* Retry support
+* Fault tolerance
+
+---
+
+## 💳 Billing Architecture
+
+Billing is organization-based and powered by **Polar**.
+
+### Plans
+
+| Plan | Features             |
+| ---- | -------------------- |
+| Free | Limited AI reviews   |
+| Pro  | Unlimited reviews    |
+| Team | Multi-member support |
+
+Billing logic is webhook-driven and production-ready.
+
+---
+
+## 🌍 Environment Variables
+
+```env
+DATABASE_URL=
+PRISMA_ACCELERATE_URL=
+
+GITHUB_APP_ID=
+GITHUB_CLIENT_ID=
+GITHUB_CLIENT_SECRET=
+GITHUB_PRIVATE_KEY=
+GITHUB_WEBHOOK_SECRET=
+
+OPENAI_API_KEY=
+
+POLAR_ACCESS_TOKEN=
+POLAR_WEBHOOK_SECRET=
+```
+
+---
+
+## 🚀 Local Development
+
+```bash
+# Install dependencies
+npm install
+
+# Run development server
+npm run dev
+
+# Build for production
+npm run build
+```
+
+---
+
+## ☁️ Deployment
+
+CodeSage AI is deployed on **Vercel**.
+
+Steps:
+
+1. Push to GitHub
+2. Import project into Vercel
+3. Configure environment variables
+4. Deploy
+
+Webhook URLs:
+
+* GitHub: `/api/webhooks/github`
+* Polar: `/api/webhooks/polar`
+
+---
+
+## 📸 Demo Flow
+
+1. User signs in with GitHub
+2. Creates or selects organization
+3. Installs GitHub App
+4. Opens a pull request
+5. AI automatically reviews PR
+6. Comment appears on GitHub
+
+---
+
+## 🧠 What This Project Demonstrates
+
+* Real-world SaaS system design
+* Multi-tenant architecture
+* Async event-driven workflows
+* AI integration in production
+* GitHub App ecosystem knowledge
+* Billing & subscription modeling
+
+
+---
+
+## ⭐ Acknowledgements
+
+* GitHub Apps
+* Prisma
+* Inngest
+* OpenAI AI SDK
+* Polar
+* Vercel
+
+---
+
+⭐ If you like this project, give it a star on GitHub!
